@@ -15,24 +15,20 @@ public class PlayerMovement : MonoBehaviour
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
-        
-        anim.SetFloat("horizontal", movement.x);
-        anim.SetFloat("vertical", movement.y);
-        anim.SetFloat("velocidade", movement.sqrMagnitude);
+
+        anim.SetFloat("Horizontal", movement.x);
+        anim.SetFloat("Vertical", movement.y);
+        anim.SetFloat("Velocidade", movement.sqrMagnitude);
 
         if (movement != Vector2.zero)
         {
-            anim.SetFloat("horizontalIdle", movement.x);
-            anim.SetFloat("verticalIdle", movement.y);
-
+            anim.SetFloat("HorizontalIdle", movement.x);
+            anim.SetFloat("VerticalIdle", movement.y);
         }
     }
     
     private void FixedUpdate()
     {
-        //Debug.Log(rb2d.position + "/" + movement + "/" + (rb2d.position + movement)
-          //        + "/" + transform.localScale);
         rb2d.MovePosition(rb2d.position + movement * (speed * Time.fixedDeltaTime));
     }
-    
 }
