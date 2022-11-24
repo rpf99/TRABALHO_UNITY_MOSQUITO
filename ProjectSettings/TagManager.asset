@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Emissor
   - Limpo
+  - Raquete
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Enemy
   - Water
   - UI
   - 
