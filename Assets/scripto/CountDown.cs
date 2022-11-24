@@ -11,14 +11,14 @@ public class CountDown : MonoBehaviour {
     public Text timeText;
     private int minutos;
     private float segundos;
-
-    //Princiapl: 5 minutos, 0 segundos
+    
     private void Start() {
-        minutos = 0;
-        segundos = 10f;
+        minutos = 5;
+        segundos = 0f;
     }
     
     void FixedUpdate() {
+
         timeText.text = String.Format("{0:00}:{1:00}", this.minutos, this.segundos);
         
         if (segundos <= 0.01) {
@@ -33,5 +33,9 @@ public class CountDown : MonoBehaviour {
         
         segundos -= Time.deltaTime;
     }
+    
+    
+    
+    
     
 }
