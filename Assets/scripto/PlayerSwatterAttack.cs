@@ -44,7 +44,6 @@ public class PlayerSwatterAttack : MonoBehaviour
     // Update is called once per frame
     void Update() {
         if (anim.GetBool("WithSwatter") == true) {
-            
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
             var v2 = new Vector2(horizontal, vertical).normalized;
@@ -57,7 +56,7 @@ public class PlayerSwatterAttack : MonoBehaviour
                 }
             }
             
-            if (Input.GetKeyDown(KeyCode.Space) & atacando==false) {
+            if (Input.GetKeyDown(KeyCode.Space) & atacando==false & carga > 0) {
                 Ataque();
             }
         }
@@ -85,6 +84,13 @@ public class PlayerSwatterAttack : MonoBehaviour
     
     public void FimAtaque() {
         this.atacando = false;
+    }
+
+    public void Recarregar(){
+        if(carga >= 0 & carga <= 450) {
+            carga += 50;
+            energia.text = "Carga: " + carga;
+        }
     }
     
 }

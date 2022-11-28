@@ -7,6 +7,7 @@ TagManager:
   - Emissor
   - Limpo
   - Raquete
+  - Carregador
   layers:
   - Default
   - TransparentFX

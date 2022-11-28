@@ -13,10 +13,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movement;
     public Animator anim;
     
-    private Text resultado;
+    private Text resultado, restantes;
     private bool jogando;
     private int quant;
-    private GameObject emissor, aviso;
+    private GameObject aux, aviso;
 
     public PlayerSwatterAttack swatterattack;
     //private SpriteRenderer sRenderer;
@@ -26,23 +26,27 @@ public class PlayerMovement : MonoBehaviour
     
     private void Start() {
         jogando = true;
-        quant = 1;
+        quant = GameObject.FindGameObjectsWithTag("Emissor").Length;
         speed = 10f;
         rb2d = GetComponent<Rigidbody2D>();
         
         resultado = GameObject.Find("tempo").GetComponent<Text>();
+        restantes = GameObject.Find("restantes").GetComponent<Text>();
+        restantes.text = String.Format("Emissores: {0:0}", quant);
+
         aviso = GameObject.Find("keyboards_24");
         aviso.SetActive(false);
     }
     
     private void OnCollisionEnter2D(Collision2D col){
-        if (col.gameObject.CompareTag("Emissor")) {
-            emissor = col.gameObject;
+        if (col.gameObject.CompareTag("Emissor") || col.gameObject.CompareTag("Carregador")) {
+            aux = col.gameObject;
             aviso.SetActive(true);    
         }
     }
     
-    private void OnCollisionExit2D(){
+    private void OnCollisionExit2D() {
+        aux = null;
         aviso.SetActive(false);
     }
     
@@ -64,13 +68,19 @@ public class PlayerMovement : MonoBehaviour
                 rb2d.MovePosition(rb2d.position + movement * (speed * Time.fixedDeltaTime));
             } 
             if (Input.GetKey(KeyCode.X) & aviso.activeSelf == true) {
-                this.quant -= 1;
-                Destroy(emissor);
-                //changeSprite();
-                if (quant == 0) {
-                    resultado.text = "Parabéns, Você Venceu";
-                    Time.timeScale = 0f;
-                    jogando = false;
+                
+                if (aux.CompareTag("Emissor")) {
+                    this.quant -= 1;
+                    restantes.text = String.Format("Emissores: {0:0}", quant);
+                    Destroy(aux);
+                    //changeSprite();
+                    if (quant == 0) {
+                        resultado.text = "Parabéns, Você Venceu";
+                        Time.timeScale = 0f;
+                        jogando = false;
+                    }
+                }else if (aux.CompareTag("Carregador")){
+                    swatterattack.Recarregar();
                 }
             } 
         }
