@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerSwatterAttack : MonoBehaviour
+public class PlayerSwatterAttack : MonoBehaviour 
 {
+    
     public Transform pontoAtaque;
     public Text energia;
 
@@ -20,7 +21,7 @@ public class PlayerSwatterAttack : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         raioAtaque = 0.5f;
-        carga = 500;
+        carga = 100;
         atacando = false;
         energia.text = "Carga: " + carga;
         energia.gameObject.SetActive(false);
@@ -57,8 +58,8 @@ public class PlayerSwatterAttack : MonoBehaviour
                 }
             }
             
-            if (Input.GetKeyDown(KeyCode.Space) & atacando==false) {
-                Ataque();
+            if (Input.GetKeyDown(KeyCode.Space) & atacando==false & carga > 0) {
+                	Ataque();            
             }
         }
     }
@@ -72,7 +73,7 @@ public class PlayerSwatterAttack : MonoBehaviour
         foreach (Collider2D inimigo in inimigos) {
             if (inimigo != null) {
                 Destroy(inimigo.gameObject);
-                carga -= 50;
+                carga -= 10;
             }
         }
 
@@ -85,6 +86,13 @@ public class PlayerSwatterAttack : MonoBehaviour
     
     public void FimAtaque() {
         this.atacando = false;
+    }
+    
+    public void Recarregar(){
+       	if(carga >= 0 & carga <= 90) {
+            carga += 10;
+            energia.text = "Carga: " + carga;
+        }
     }
     
 }
