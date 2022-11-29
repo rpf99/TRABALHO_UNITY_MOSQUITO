@@ -16,33 +16,41 @@ public class PlayerMovement : MonoBehaviour
     private Text resultado;
     private bool jogando;
     private int quant;
-    private GameObject emissor, aviso;
-
+    private GameObject aux, aviso;
+    
+    private Text restantes;
     public PlayerSwatterAttack swatterattack;
     //private SpriteRenderer sRenderer;
     //public Sprite[] sprites;
     
-    //OBS: inicalmente a quantidade de emissores é 1, se limpar 1 já ganha o jogo
-    
     private void Start() {
         jogando = true;
-        quant = 1;
+        quant = GameObject.FindGameObjectsWithTag("Emissor").Length;
         speed = 10f;
         rb2d = GetComponent<Rigidbody2D>();
         
         resultado = GameObject.Find("tempo").GetComponent<Text>();
         aviso = GameObject.Find("keyboards_24");
         aviso.SetActive(false);
+
+        restantes = GameObject.Find("restantes").GetComponent<Text>();
+        restantes.text = String.Format("Emissores: {0:0}", quant);
     }
     
     private void OnCollisionEnter2D(Collision2D col){
         if (col.gameObject.CompareTag("Emissor")) {
-            emissor = col.gameObject;
+            aux = col.gameObject;
             aviso.SetActive(true);    
+        }
+        
+        if (col.gameObject.CompareTag("Carregador")) {
+             aux = col.gameObject;
+             aviso.SetActive(true);    
         }
     }
     
-    private void OnCollisionExit2D(){
+    private void OnCollisionExit2D() {
+        aux = null;
         aviso.SetActive(false);
     }
     
@@ -63,26 +71,30 @@ public class PlayerMovement : MonoBehaviour
 
                 rb2d.MovePosition(rb2d.position + movement * (speed * Time.fixedDeltaTime));
             } 
+            
             if (Input.GetKey(KeyCode.X) & aviso.activeSelf == true) {
-                this.quant -= 1;
-                Destroy(emissor);
-                //changeSprite();
-                if (quant == 0) {
-                    resultado.text = "Parabéns, Você Venceu";
-                    Time.timeScale = 0f;
-                    jogando = false;
-                }
+                if(aux.CompareTag("Emissor")){
+                    changeSprite();
+                }else if(aux.CompareTag("Carregador")){
+                    swatterattack.Recarregar();
+                }  
             } 
         }
     }
     
-    /*
     private void changeSprite(){
-        sRenderer = emissor.GetComponent<SpriteRenderer>();
-        //emissor.tag = "Limpo"
-        if(sRenderer.sprite == sprites[]) {
-            sRenderer.sprite = sprites[]
+        //sRenderer = aux.GetComponent<SpriteRenderer>();
+        //aux.tag = "Limpo"
+        
+        Destroy(aux);
+        quant -= 1;
+        restantes.text = String.Format("Emissores: {0:0}", quant);
+
+        if (quant == 0) {
+            resultado.text = "Parabéns, Você Venceu";
+            Time.timeScale = 0f;
+            jogando = false;
         }
-    }*/
+    }
     
 }
