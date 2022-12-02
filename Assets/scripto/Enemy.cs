@@ -26,8 +26,8 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         target = GameObject.FindWithTag("Player").transform;
-
     }
+    
     private void Update()
     {
         animator.SetBool("isFlying", isInChaseRange);

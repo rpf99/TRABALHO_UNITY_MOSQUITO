@@ -13,20 +13,16 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movement;
     public Animator anim;
     
-    private Text resultado;
+    private Text resultado, restantes;
     private bool jogando;
     private int quant;
     private GameObject aux, aviso;
-    
-    private Text restantes;
     public PlayerSwatterAttack swatterattack;
-    //private SpriteRenderer sRenderer;
-    //public Sprite[] sprites;
     
     private void Start() {
         jogando = true;
         quant = GameObject.FindGameObjectsWithTag("Emissor").Length;
-        speed = 10f;
+        speed = 15f;
         rb2d = GetComponent<Rigidbody2D>();
         
         resultado = GameObject.Find("tempo").GetComponent<Text>();
@@ -38,14 +34,9 @@ public class PlayerMovement : MonoBehaviour
     }
     
     private void OnCollisionEnter2D(Collision2D col){
-        if (col.gameObject.CompareTag("Emissor")) {
+        if (col.gameObject.CompareTag("Emissor") || col.gameObject.CompareTag("Carregador")) {
             aux = col.gameObject;
             aviso.SetActive(true);    
-        }
-        
-        if (col.gameObject.CompareTag("Carregador")) {
-             aux = col.gameObject;
-             aviso.SetActive(true);    
         }
     }
     
@@ -72,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
                 rb2d.MovePosition(rb2d.position + movement * (speed * Time.fixedDeltaTime));
             } 
             
-            if (Input.GetKey(KeyCode.X) & aviso.activeSelf == true) {
+            if (Input.GetKey(KeyCode.X) & aviso.activeSelf == true & movement.sqrMagnitude <= 0) {
                 if(aux.CompareTag("Emissor")){
                     changeSprite();
                 }else if(aux.CompareTag("Carregador")){
@@ -83,11 +74,8 @@ public class PlayerMovement : MonoBehaviour
     }
     
     private void changeSprite(){
-        //sRenderer = aux.GetComponent<SpriteRenderer>();
-        //aux.tag = "Limpo"
-        
-        Destroy(aux);
         quant -= 1;
+        aux.GetComponent<Spawner>().TrocarSprite();
         restantes.text = String.Format("Emissores: {0:0}", quant);
 
         if (quant == 0) {
