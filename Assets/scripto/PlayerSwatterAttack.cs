@@ -59,7 +59,7 @@ public class PlayerSwatterAttack : MonoBehaviour
             }
             
             if (Input.GetKeyDown(KeyCode.Space) & atacando==false & carga > 0) {
-                	Ataque();            
+                Ataque();            
             }
         }
     }

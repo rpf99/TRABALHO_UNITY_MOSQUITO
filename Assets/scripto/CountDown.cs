@@ -18,7 +18,6 @@ public class CountDown : MonoBehaviour {
     }
     
     void FixedUpdate() {
-
         timeText.text = String.Format("{0:00}:{1:00}", this.minutos, this.segundos);
         
         if (segundos <= 0.01) {
@@ -33,9 +32,5 @@ public class CountDown : MonoBehaviour {
         
         segundos -= Time.deltaTime;
     }
-    
-    
-    
-    
     
 }
