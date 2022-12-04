@@ -27,15 +27,6 @@ public class PlayerSwatterAttack : MonoBehaviour
         energia.gameObject.SetActive(false);
         pontoAtaque.gameObject.SetActive(false);
     }
-
-    private void OnCollisionEnter2D(Collision2D col){
-        if (col.gameObject.CompareTag("Raquete")) {
-            Destroy(col.gameObject);
-            energia.gameObject.SetActive(true);
-            anim.SetBool("WithSwatter",true);
-            pontoAtaque.gameObject.SetActive(true);
-        }
-    }
     
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
@@ -44,7 +35,7 @@ public class PlayerSwatterAttack : MonoBehaviour
     
     // Update is called once per frame
     void Update() {
-        if (anim.GetBool("WithSwatter") == true) {
+        if (anim.GetBool("WithSwatter")) {
             
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
@@ -81,18 +72,31 @@ public class PlayerSwatterAttack : MonoBehaviour
     }
 
     public  bool EstaAtacando() {
-        return this.atacando;
+        return atacando;
     }
     
     public void FimAtaque() {
-        this.atacando = false;
+        atacando = false;
     }
     
     public void Recarregar(){
+        Debug.Log("V");
        	if(carga >= 0 & carga <= 90) {
             carga += 10;
             energia.text = "Carga: " + carga;
         }
+    }
+    
+    public void AtivarRaquete(){
+        energia.gameObject.SetActive(true);
+        anim.SetBool("WithSwatter",true);
+        pontoAtaque.gameObject.SetActive(true);
+    }
+    
+    public void Desativar(){
+        energia.gameObject.SetActive(false);
+        anim.SetBool("WithSwatter", false);
+        pontoAtaque.gameObject.SetActive(false);
     }
     
 }
