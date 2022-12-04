@@ -12,8 +12,7 @@ public class Spawner : MonoBehaviour
     private SpriteRenderer sr;
     private GameObject warningClone;
     
-    private void Start() 
-    {
+    private void Start() {
         sr = gameObject.GetComponent<SpriteRenderer>();
         var v3 = transform.position;
         v3.y += 0.6f;

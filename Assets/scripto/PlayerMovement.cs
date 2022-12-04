@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public Animator anim;
     
     private Text resultado, restantes;
-    private bool jogando;
+    private bool jogando, protegido;
     private int quant;
     private GameObject aux, aviso;
     public PlayerSwatterAttack swatterattack;
@@ -45,8 +45,20 @@ public class PlayerMovement : MonoBehaviour
         aviso.SetActive(false);
     }
     
+    private void OnTriggerEnter2D(Collider2D col) {
+        if (col.gameObject.CompareTag("Raquete") && anim.GetBool("WithSwatter") == false) {
+            Destroy(col.gameObject);
+            swatterattack.AtivarRaquete();
+            
+        }else if(col.gameObject.CompareTag("Camisa")){
+            Destroy(col.gameObject);
+            anim.SetBool("WithShirt",true);
+            protegido = true;
+        }
+    }
+    
     void Update() {
-        if (jogando == true) {
+        if (jogando) {
             if (swatterattack.EstaAtacando() == false) {
                 movement.x = Input.GetAxisRaw("Horizontal");
                 movement.y = Input.GetAxisRaw("Vertical");
@@ -63,10 +75,10 @@ public class PlayerMovement : MonoBehaviour
                 rb2d.MovePosition(rb2d.position + movement * (speed * Time.fixedDeltaTime));
             } 
             
-            if (Input.GetKey(KeyCode.X) & aviso.activeSelf == true & movement.sqrMagnitude <= 0) {
+            if (Input.GetKey(KeyCode.X) & aviso.activeSelf & movement.sqrMagnitude <= 0) {
                 if(aux.CompareTag("Emissor")){
                     changeSprite();
-                }else if(aux.CompareTag("Carregador")){
+                }else if(aux.CompareTag("Carregador") & anim.GetBool("WithSwatter")){
                     swatterattack.Recarregar();
                 }  
             } 
