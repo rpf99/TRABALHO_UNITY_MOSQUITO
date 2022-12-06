@@ -17,15 +17,18 @@ public class PlayerSwatterAttack : MonoBehaviour
     private bool atacando;
     
     public LayerMask enemy;
+    public AudioClip eletric_spawn;
+    private AudioSource sound;
+        
+    //private SoundEffectTreatment sounds;
     
     // Start is called before the first frame update
     void Start() {
         raioAtaque = 0.5f;
-        carga = 100;
         atacando = false;
-        energia.text = "Carga: " + carga;
         energia.gameObject.SetActive(false);
         pontoAtaque.gameObject.SetActive(false);
+        sound = GetComponent<AudioSource>();
     }
     
     private void OnDrawGizmos() {
@@ -36,7 +39,6 @@ public class PlayerSwatterAttack : MonoBehaviour
     // Update is called once per frame
     void Update() {
         if (anim.GetBool("WithSwatter")) {
-            
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
             var v2 = new Vector2(horizontal, vertical).normalized;
@@ -56,6 +58,7 @@ public class PlayerSwatterAttack : MonoBehaviour
     }
 
     private void Ataque() {
+        sound.PlayOneShot(eletric_spawn);
         anim.SetTrigger("Attack");
         atacando = true;
         
@@ -64,7 +67,9 @@ public class PlayerSwatterAttack : MonoBehaviour
         foreach (Collider2D inimigo in inimigos) {
             if (inimigo != null) {
                 Destroy(inimigo.gameObject);
-                carga -= 10;
+                if (carga > 0) {
+                    carga -= 10;
+                }
             }
         }
 
@@ -80,7 +85,6 @@ public class PlayerSwatterAttack : MonoBehaviour
     }
     
     public void Recarregar(){
-        Debug.Log("V");
        	if(carga >= 0 & carga <= 90) {
             carga += 10;
             energia.text = "Carga: " + carga;
@@ -88,6 +92,8 @@ public class PlayerSwatterAttack : MonoBehaviour
     }
     
     public void AtivarRaquete(){
+        carga = 100;
+        energia.text = "Carga: " + carga;
         energia.gameObject.SetActive(true);
         anim.SetBool("WithSwatter",true);
         pontoAtaque.gameObject.SetActive(true);

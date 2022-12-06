@@ -19,4 +19,5 @@ public class HealthController : MonoBehaviour
     {
         healthBar.fillAmount = health / healthMax;
     }
+    
 }

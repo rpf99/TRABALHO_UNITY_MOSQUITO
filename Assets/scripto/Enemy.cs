@@ -21,8 +21,7 @@ public class Enemy : MonoBehaviour
     private bool isInChaseRange;
     private bool isInAttackRange;
 
-    private void Start() 
-    {
+    private void Start() {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         target = GameObject.FindWithTag("Player").transform;
