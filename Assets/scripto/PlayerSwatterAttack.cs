@@ -19,7 +19,7 @@ public class PlayerSwatterAttack : MonoBehaviour
     public LayerMask enemy;
     public AudioClip eletric_spawn;
     private AudioSource sound;
-
+    
     void Start() {
         raioAtaque = 0.5f;
         atacando = false;
@@ -67,10 +67,10 @@ public class PlayerSwatterAttack : MonoBehaviour
                 }
             }
         }
-
+        
         energia.text = "Carga: " + carga;
     }
-
+    
     public  bool EstaAtacando() {
         return atacando;
     }

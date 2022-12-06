@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -4357927101968466967}
   - component: {fileID: -1274680863269031162}
   - component: {fileID: 3308183270579496783}
-  - component: {fileID: 7999591042523363267}
+  - component: {fileID: -5241363319443037298}
   m_Layer: 3
   m_Name: Mosquito
   m_TagString: Untagged
@@ -30,8 +30,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3337028428498170804}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0245, y: -0.0533, z: 0}
-  m_LocalScale: {x: 1.3470324, y: 1.3331, z: 1}
+  m_LocalPosition: {x: 0.0108, y: -0.0159, z: 0}
+  m_LocalScale: {x: 1.2617235, y: 1.0991527, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -51,8 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   checkRadius: 5
-  attackRadius: 3
-  picadas: 0
+  attackRadius: 0.5
   shouldRotate: 1
   whatIsPlayer:
     serializedVersion: 2
@@ -98,7 +97,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 2
   m_Sprite: {fileID: -337722453, guid: d7e2c0ca8e75c4c42b0f2e3365bed64a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -177,7 +176,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.32, y: 0.32}
   m_EdgeRadius: 0
---- !u!82 &7999591042523363267
+--- !u!82 &-5241363319443037298
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -188,17 +187,17 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 207296eb58f73054ab9e18bcf96fa1a0, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
-  m_Pitch: -1.03
-  Loop: 1
+  m_Pitch: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 600
+  MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
