@@ -18,6 +18,10 @@ public class PlayerMovement : MonoBehaviour
     private int quant;
     private GameObject aux, aviso;
     public PlayerSwatterAttack swatterattack;
+    private HealthController hc;
+    
+    private AudioSource sounds;
+    public AudioClip []lt;
     
     private void Start() {
         jogando = true;
@@ -31,6 +35,10 @@ public class PlayerMovement : MonoBehaviour
 
         restantes = GameObject.Find("restantes").GetComponent<Text>();
         restantes.text = String.Format("Emissores: {0:0}", quant);
+
+        hc = GameObject.Find("barra_de_vida").GetComponent<HealthController>();
+        sounds = GetComponent<AudioSource>();
+        sounds.Stop();
     }
     
     private void OnCollisionEnter2D(Collision2D col){
@@ -47,10 +55,12 @@ public class PlayerMovement : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D col) {
         if (col.gameObject.CompareTag("Raquete") && anim.GetBool("WithSwatter") == false) {
+            sounds.PlayOneShot(lt[0]);
             Destroy(col.gameObject);
             swatterattack.AtivarRaquete();
             
         }else if(col.gameObject.CompareTag("Camisa")){
+            sounds.PlayOneShot(lt[0]);
             Destroy(col.gameObject);
             anim.SetBool("WithShirt",true);
             protegido = true;
@@ -62,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
             if (swatterattack.EstaAtacando() == false) {
                 movement.x = Input.GetAxisRaw("Horizontal");
                 movement.y = Input.GetAxisRaw("Vertical");
-            
+                
                 anim.SetFloat("Horizontal", movement.x);
                 anim.SetFloat("Vertical", movement.y);
                 anim.SetFloat("Velocidade", movement.sqrMagnitude);
@@ -72,6 +82,14 @@ public class PlayerMovement : MonoBehaviour
                     anim.SetFloat("VerticalIdle", movement.y);
                 }
 
+                if (movement.sqrMagnitude > 0) {
+                    if (!sounds.isPlaying) {
+                        sounds.Play();
+                    }
+                }else {
+                    sounds.Stop();
+                }
+                
                 rb2d.MovePosition(rb2d.position + movement * (speed * Time.fixedDeltaTime));
             } 
             
@@ -86,14 +104,38 @@ public class PlayerMovement : MonoBehaviour
     }
     
     private void changeSprite(){
+        sounds.PlayOneShot(lt[4]);
         quant -= 1;
         aux.GetComponent<Spawner>().TrocarSprite();
         restantes.text = String.Format("Emissores: {0:0}", quant);
 
         if (quant == 0) {
+            sounds.Stop();
+            sounds.PlayOneShot(lt[1]);
             resultado.text = "Parabéns, Você Venceu";
             Time.timeScale = 0f;
             jogando = false;
+        }
+    }
+    
+    public void ReceberDano(){
+        if(anim.GetBool("WithSwatter")){
+            swatterattack.Desativar();
+        }
+
+        if(protegido){
+            anim.SetBool("WithShirt", false);
+            protegido = false;
+        }else{
+            speed -= 5;
+            hc.health -=1;
+            if(hc.health == 0){
+                sounds.Stop();
+                sounds.PlayOneShot(lt[2]);
+                resultado.text = "Game Over";
+                Time.timeScale = 0f;
+                jogando = false;
+            }
         }
     }
     

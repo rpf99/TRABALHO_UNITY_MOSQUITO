@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Spawner : MonoBehaviour
     public SpriteTreatment st;
     private SpriteRenderer sr;
     private GameObject warningClone;
+
+    private float distancia_maxima = 1.5f;
     
     private void Start() {
         sr = gameObject.GetComponent<SpriteRenderer>();
@@ -19,11 +22,18 @@ public class Spawner : MonoBehaviour
         warningClone = Instantiate(warning, v3, warning.transform.rotation);
     }
 
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, distancia_maxima);
+    }
+
     void Update() {
         if(gameObject.CompareTag("Emissor")) {
             if(Time.time > nextSpawn) {
                 nextSpawn = Time.time + spawnRate;
-                Instantiate(enemy, transform.position, enemy.transform.rotation);
+                float aleatorio = Random.Range(1f,this.distancia_maxima);
+                Vector3 pos = Random.onUnitSphere * aleatorio;
+                Instantiate(enemy, pos, enemy.transform.rotation);
             } 
         }
     }

@@ -11,10 +11,13 @@ public class CountDown : MonoBehaviour {
     public Text timeText;
     private int minutos;
     private float segundos;
-    
+    private AudioSource sound;
+
     private void Start() {
         minutos = 5;
         segundos = 0f;
+        sound = GetComponent<AudioSource>();
+        sound.Stop();
     }
     
     void FixedUpdate() {
@@ -22,6 +25,7 @@ public class CountDown : MonoBehaviour {
         
         if (segundos <= 0.01) {
             if (minutos == 0) {
+                sound.PlayOneShot(sound.clip);
                 timeText.text = "Game Over";
                 Time.timeScale = 0;
             }else {
