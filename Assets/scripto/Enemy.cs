@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class Enemy : MonoBehaviour
     public float speed;
     public float checkRadius;
     public float attackRadius;
+    public int picadas;
 
     public bool shouldRotate;
     
@@ -21,11 +23,14 @@ public class Enemy : MonoBehaviour
     private bool isInChaseRange;
     private bool isInAttackRange;
 
+    HealthController hController;
     private void Start() 
-    {
+    {   
+        hController = HealthController.hController;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         target = GameObject.FindWithTag("Player").transform;
+        picadas = 0;
     }
     
     private void Update()
@@ -52,7 +57,11 @@ public class Enemy : MonoBehaviour
         if(isInAttackRange)
         {
             rb.velocity = Vector2.zero;
-
+            if (picadas < 2){
+                hController.Damage();
+                picadas++;
+            }
+            
         }
     }
     private void MoveCharacter(Vector2 dir)
