@@ -22,50 +22,60 @@ public class Enemy : MonoBehaviour
 
     private bool isInChaseRange;
     private bool isInAttackRange;
-
-    HealthController hController;
+    
+    private PlayerMovement pl;
+    private AudioSource Asource;
+    
     private void Start() 
     {   
-        hController = HealthController.hController;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         target = GameObject.FindWithTag("Player").transform;
+        pl = target.GetComponent<PlayerMovement>();
+        Asource = GetComponent<AudioSource>();
+        Asource.Stop();
         picadas = 0;
     }
+    
     
     private void Update()
     {
         animator.SetBool("isFlying", isInChaseRange);
         isInChaseRange = Physics2D.OverlapCircle(transform.position, checkRadius, whatIsPlayer);
         isInAttackRange = Physics2D.OverlapCircle(transform.position, attackRadius, whatIsPlayer);
-
+        
+        if (!Asource.isPlaying) {
+            Asource.Play();
+        }else if (pl.Perdeu()) {
+            Asource.Stop();
+        }
+        
         dir = target.position - transform.position;
         dir.Normalize();
         movement = dir;
-        if(shouldRotate)
-        {
+        
+        if(shouldRotate) {
             animator.SetFloat("X", dir.x);
             animator.SetFloat("Y", dir.y);
         }
     }
-    private void FixedUpdate()
-    {
-        if(isInChaseRange && isInAttackRange)
-        {
+    
+    private void FixedUpdate() {
+        if(isInChaseRange && isInAttackRange) {
             MoveCharacter(movement);
         }
-        if(isInAttackRange)
-        {
+        
+        if(isInAttackRange) {
             rb.velocity = Vector2.zero;
-            if (picadas < 2){
-                hController.Damage();
+            if (picadas < 1){
+                Asource.Stop();
+                pl.ReceberDano();
                 picadas++;
             }
-            
         }
     }
-    private void MoveCharacter(Vector2 dir)
-    {
+
+    private void MoveCharacter(Vector2 dir) {
         rb.MovePosition((Vector2)transform.position + (dir * speed * Time.deltaTime));
     }
 }
