@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 
 public class HealthController : MonoBehaviour
-{   
-
+{
+    
     public static HealthController hController { get; private set; }
 
     public float health = 15;
@@ -40,7 +40,6 @@ public class HealthController : MonoBehaviour
 
     public void Damage()
     {   
-        Debug.Log("teste");
-        this.Health = Health - 3;
+        this.Health = Health - 5;
     }
 }

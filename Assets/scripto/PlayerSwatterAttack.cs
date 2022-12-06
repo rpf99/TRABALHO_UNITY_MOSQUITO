@@ -9,7 +9,7 @@ public class PlayerSwatterAttack : MonoBehaviour
     
     public Transform pontoAtaque;
     public Text energia;
-
+    
     private float raioAtaque;
     public Animator anim;
     
@@ -19,10 +19,7 @@ public class PlayerSwatterAttack : MonoBehaviour
     public LayerMask enemy;
     public AudioClip eletric_spawn;
     private AudioSource sound;
-        
-    //private SoundEffectTreatment sounds;
-    
-    // Start is called before the first frame update
+
     void Start() {
         raioAtaque = 0.5f;
         atacando = false;
@@ -36,7 +33,6 @@ public class PlayerSwatterAttack : MonoBehaviour
         Gizmos.DrawWireSphere(pontoAtaque.position, raioAtaque);
     }
     
-    // Update is called once per frame
     void Update() {
         if (anim.GetBool("WithSwatter")) {
             var horizontal = Input.GetAxis("Horizontal");
@@ -61,7 +57,6 @@ public class PlayerSwatterAttack : MonoBehaviour
         sound.PlayOneShot(eletric_spawn);
         anim.SetTrigger("Attack");
         atacando = true;
-        
         Collider2D[] inimigos = Physics2D.OverlapCircleAll(pontoAtaque.position,raioAtaque,enemy);
         
         foreach (Collider2D inimigo in inimigos) {

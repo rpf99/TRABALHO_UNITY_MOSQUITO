@@ -22,6 +22,8 @@ public class PlayerMovement : MonoBehaviour
     
     private AudioSource sounds;
     public AudioClip []lt;
+
+    private GameObject backgroundSong;
     
     private void Start() {
         jogando = true;
@@ -39,6 +41,8 @@ public class PlayerMovement : MonoBehaviour
         hc = GameObject.Find("barra_de_vida").GetComponent<HealthController>();
         sounds = GetComponent<AudioSource>();
         sounds.Stop();
+
+        backgroundSong = GameObject.Find("BackgroundSong");
     }
     
     private void OnCollisionEnter2D(Collision2D col){
@@ -105,11 +109,12 @@ public class PlayerMovement : MonoBehaviour
     
     private void changeSprite(){
         sounds.PlayOneShot(lt[4]);
-        quant -= 1;
         aux.GetComponent<Spawner>().TrocarSprite();
+        quant -= 1;
         restantes.text = String.Format("Emissores: {0:0}", quant);
-
+        
         if (quant == 0) {
+            backgroundSong.GetComponent<AudioSource>().Stop();
             sounds.Stop();
             sounds.PlayOneShot(lt[1]);
             resultado.text = "Parabéns, Você Venceu";
@@ -127,16 +132,23 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("WithShirt", false);
             protegido = false;
         }else{
-            speed -= 5;
-            hc.health -=1;
+            sounds.PlayOneShot(lt[5]);
+            speed -= 5; 
+            hc.Damage();
+            
             if(hc.health == 0){
+                jogando = false;
+                backgroundSong.GetComponent<AudioSource>().Stop();
                 sounds.Stop();
                 sounds.PlayOneShot(lt[2]);
                 resultado.text = "Game Over";
                 Time.timeScale = 0f;
-                jogando = false;
             }
         }
+    }
+
+    public bool Perdeu() {
+        return jogando == false;
     }
     
 }
