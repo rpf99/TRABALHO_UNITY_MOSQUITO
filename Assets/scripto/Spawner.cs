@@ -14,7 +14,8 @@ public class Spawner : MonoBehaviour
     private GameObject warningClone;
     private float distancia_maxima = 1.5f;
     
-    public AudioSource AS;
+    private AudioSource AS;
+    public AudioClip treated;
     
     private void Start() {
         sr = gameObject.GetComponent<SpriteRenderer>();
@@ -36,7 +37,6 @@ public class Spawner : MonoBehaviour
                 nextSpawn = Time.time + spawnRate;
                 float aleatorio = Random.Range(1f, this.distancia_maxima);
                 Vector3 pos = (Random.onUnitSphere * aleatorio) + transform.position;
-                Debug.Log("POS: " + pos + ",Transform: " + transform.position);
                 AS.PlayOneShot(AS.clip);
                 Instantiate(enemy, pos, enemy.transform.rotation);
             } 
@@ -44,6 +44,7 @@ public class Spawner : MonoBehaviour
     }
 
     public void TrocarSprite() {
+        AS.PlayOneShot(treated);
         warningClone.transform.parent = null;
         gameObject.tag = "Limpo";
         DestroyImmediate(warningClone);

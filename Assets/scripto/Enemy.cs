@@ -8,10 +8,8 @@ public class Enemy : MonoBehaviour
     public float speed;
     public float checkRadius;
     public float attackRadius;
-    public int picadas;
 
     public bool shouldRotate;
-    
     public LayerMask whatIsPlayer;
 
     private Transform target;
@@ -25,30 +23,28 @@ public class Enemy : MonoBehaviour
     
     private PlayerMovement pl;
     private AudioSource Asource;
+    private float intervalo_ataque;
     
-    private void Start() 
-    {   
+    private void Start(){
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         target = GameObject.FindWithTag("Player").transform;
         pl = target.GetComponent<PlayerMovement>();
         Asource = GetComponent<AudioSource>();
+        Asource.volume = 8f;
         Asource.Stop();
-        picadas = 0;
+        intervalo_ataque = 1f;
     }
     
+    private void Update() {
     
-    private void Update()
-    {
+        if (!Asource.isPlaying && !pl.Perdeu()) {
+            Asource.Play();
+        }
+        
         animator.SetBool("isFlying", isInChaseRange);
         isInChaseRange = Physics2D.OverlapCircle(transform.position, checkRadius, whatIsPlayer);
         isInAttackRange = Physics2D.OverlapCircle(transform.position, attackRadius, whatIsPlayer);
-        
-        if (!Asource.isPlaying) {
-            Asource.Play();
-        }else if (pl.Perdeu()) {
-            Asource.Stop();
-        }
         
         dir = target.position - transform.position;
         dir.Normalize();
@@ -61,20 +57,25 @@ public class Enemy : MonoBehaviour
     }
     
     private void FixedUpdate() {
-        if(isInChaseRange && isInAttackRange) {
-            MoveCharacter(movement);
-        }
-        
-        if(isInAttackRange) {
-            rb.velocity = Vector2.zero;
-            if (picadas < 1){
-                Asource.Stop();
-                pl.ReceberDano();
-                picadas++;
+        if (pl.Perdeu()) {
+            Asource.Stop();
+        }else {
+            if (isInChaseRange && !isInAttackRange) {
+                MoveCharacter(movement);
+            }
+            
+            if (isInAttackRange) {
+                rb.velocity = Vector2.zero;
+                intervalo_ataque -= Time.deltaTime;
+                if (intervalo_ataque <= 0) {
+                    Asource.Stop();
+                    pl.ReceberDano();
+                    intervalo_ataque = 1f;
+                }
             }
         }
     }
-
+    
     private void MoveCharacter(Vector2 dir) {
         rb.MovePosition((Vector2)transform.position + (dir * speed * Time.deltaTime));
     }

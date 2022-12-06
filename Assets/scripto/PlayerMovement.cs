@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
             sounds.PlayOneShot(lt[0]);
             Destroy(col.gameObject);
             swatterattack.AtivarRaquete();
-            
+
         }else if(col.gameObject.CompareTag("Camisa")){
             sounds.PlayOneShot(lt[0]);
             Destroy(col.gameObject);
@@ -108,7 +108,6 @@ public class PlayerMovement : MonoBehaviour
     }
     
     private void changeSprite(){
-        sounds.PlayOneShot(lt[4]);
         aux.GetComponent<Spawner>().TrocarSprite();
         quant -= 1;
         restantes.text = String.Format("Emissores: {0:0}", quant);
@@ -123,16 +122,16 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     
-    public void ReceberDano(){
+    public void ReceberDano() {
+        sounds.PlayOneShot(lt[5]);
+        
         if(anim.GetBool("WithSwatter")){
             swatterattack.Desativar();
         }
-
         if(protegido){
             anim.SetBool("WithShirt", false);
             protegido = false;
         }else{
-            sounds.PlayOneShot(lt[5]);
             speed -= 5; 
             hc.Damage();
             
