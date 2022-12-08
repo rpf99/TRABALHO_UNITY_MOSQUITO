@@ -13,6 +13,6 @@ public class Menu : MonoBehaviour
 
     public void SairJogo()
     {
-        Application.Quit();
+        UnityEditor.EditorApplication.isPlaying = false;
     }
 }

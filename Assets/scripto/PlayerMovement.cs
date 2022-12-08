@@ -47,10 +47,12 @@ public class PlayerMovement : MonoBehaviour
         cont_escudo = 5;
         defesa = GameObject.Find("defesa").GetComponent<Text>();
         defesa.gameObject.SetActive(false);
-        backgroundSong = GameObject.Find("BackgroundSong");
         
-        MinMapImage.gameObject.SetActive(false);
-        MiniMap.gameObject.SetActive(false);
+        backgroundSong = GameObject.Find("BackgroundSong");
+        backgroundSong.GetComponent<AudioSource>().Stop();
+        
+        MinMapImage.gameObject.SetActive(true);
+        MiniMap.gameObject.SetActive(true);
     }
     
     private void OnCollisionEnter2D(Collision2D col){
@@ -84,10 +86,6 @@ public class PlayerMovement : MonoBehaviour
     
     void Update() {
         if (jogando) {
-            if (hc.health == 5 || quant <= 4) {
-                AtivarMiniMapa();
-            }
-            
             if (swatterattack.EstaAtacando() == false) {
                 movement.x = Input.GetAxisRaw("Horizontal");
                 movement.y = Input.GetAxisRaw("Vertical");
@@ -112,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
                 rb2d.MovePosition(rb2d.position + movement * (speed * Time.fixedDeltaTime));
             } 
             
-            if (Input.GetKey(KeyCode.X) & aviso.activeSelf & movement.sqrMagnitude <= 0) {
+            if (Input.GetKey(KeyCode.X) & aviso.activeSelf) {
                 if(aux.CompareTag("Emissor")){
                     changeSprite();
                 }else if(aux.CompareTag("Carregador") & anim.GetBool("WithSwatter")){
@@ -131,6 +129,7 @@ public class PlayerMovement : MonoBehaviour
             backgroundSong.GetComponent<AudioSource>().Stop();
             sounds.Stop();
             sounds.PlayOneShot(lt[1]);
+            DesativarMiniMapa();
             resultado.text = "Parabéns, Você Venceu";
             Time.timeScale = 0f;
             jogando = false;
@@ -183,11 +182,6 @@ public class PlayerMovement : MonoBehaviour
         return jogando == false;
     }
     
-    public void AtivarMiniMapa(){
-        MinMapImage.gameObject.SetActive(true);
-        MiniMap.gameObject.SetActive(true);
-    }
-
     public void DesativarMiniMapa() {
         MinMapImage.gameObject.SetActive(false);
         MiniMap.gameObject.SetActive(false);
