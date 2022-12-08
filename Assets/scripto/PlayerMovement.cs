@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start() {
         jogando = true;
         quant = GameObject.FindGameObjectsWithTag("Emissor").Length;
-        speed = 15f;
+        speed = 10f;
         rb2d = GetComponent<Rigidbody2D>();
         
         resultado = GameObject.Find("tempo").GetComponent<Text>();
@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
         sounds = GetComponent<AudioSource>();
         sounds.Stop();
 
-        cont_escudo = 5;
+        cont_escudo = 3;
         defesa = GameObject.Find("defesa").GetComponent<Text>();
         defesa.gameObject.SetActive(false);
         
@@ -74,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
             swatterattack.AtivarRaquete();
 
         }else if(col.gameObject.CompareTag("Camisa")){
-            cont_escudo = 5;
+            cont_escudo = 3;
             sounds.PlayOneShot(lt[0]);
             Destroy(col.gameObject);
             anim.SetBool("WithShirt",true);
@@ -139,10 +139,6 @@ public class PlayerMovement : MonoBehaviour
     public void ReceberDano() {
         sounds.PlayOneShot(lt[5]);
         
-        if(anim.GetBool("WithSwatter")) {
-            swatterattack.Desativar();
-        }
-        
         if(protegido){
             cont_escudo -= 1;
             defesa.text = "Defesa: " + cont_escudo;
@@ -155,7 +151,7 @@ public class PlayerMovement : MonoBehaviour
             }
      
         }else{
-            speed -= 5; 
+            speed = speed * 0.66f; 
             hc.Damage();
             if(hc.health == 0) {
                 GAMEOVER();

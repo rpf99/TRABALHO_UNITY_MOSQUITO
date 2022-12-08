@@ -38,6 +38,10 @@ public class PlayerSwatterAttack : MonoBehaviour
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
             var v2 = new Vector2(horizontal, vertical).normalized;
+			
+			if (carga > 110) {
+				carga = 110;
+			}
             
             if (v2 != Vector2.zero) {
                 if (v2.x != 0 & v2.y != 0) {
@@ -47,7 +51,7 @@ public class PlayerSwatterAttack : MonoBehaviour
                 }
             }
             
-            if (Input.GetKeyDown(KeyCode.Space) & atacando==false & carga > 0) {
+            if (Input.GetKeyDown(KeyCode.Space) & atacando==false & carga > 10) {
                 Ataque();            
             }
         }
@@ -62,13 +66,13 @@ public class PlayerSwatterAttack : MonoBehaviour
         foreach (Collider2D inimigo in inimigos) {
             if (inimigo != null) {
                 inimigo.GetComponent<Enemy>().Morte();
-                if (carga > 0) {
+                if (carga > 10) {
                     carga -= 10;
                 }
             }
         }
         
-        energia.text = "Carga: " + carga;
+        energia.text = "Carga: " + (carga - 10);
     }
     
     public  bool EstaAtacando() {
@@ -80,15 +84,15 @@ public class PlayerSwatterAttack : MonoBehaviour
     }
     
     public void Recarregar(){
-       	if(carga >= 0 & carga <= 90) {
-            carga += 10;
-            energia.text = "Carga: " + carga;
+       	if(carga >= 0 & carga <= 100) {
+            carga += 110;
+            energia.text = "Carga: " + (carga - 10);
         }
     }
     
     public void AtivarRaquete(){
-        carga = 100;
-        energia.text = "Carga: " + carga;
+        carga = 110;
+        energia.text = "Carga: " + (carga - 10);
         energia.gameObject.SetActive(true);
         anim.SetBool("WithSwatter",true);
         pontoAtaque.gameObject.SetActive(true);
