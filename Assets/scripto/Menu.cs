@@ -7,8 +7,7 @@ public class Menu : MonoBehaviour
 {
     [SerializeField] private string nomeDoLevelDeJogo;
 
-    public void Jogar()
-    {
+    public void Jogar() {
         SceneManager.LoadScene(nomeDoLevelDeJogo);
     }
 

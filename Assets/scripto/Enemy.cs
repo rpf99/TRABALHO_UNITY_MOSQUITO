@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
     private PlayerMovement pl;
     private AudioSource Asource;
     private float intervalo_ataque;
+    private bool ativo;
     
     private void Start(){
         rb = GetComponent<Rigidbody2D>();
@@ -34,10 +35,10 @@ public class Enemy : MonoBehaviour
         Asource.volume = 8f;
         Asource.Stop();
         intervalo_ataque = 1f;
+        ativo = true;
     }
     
     private void Update() {
-    
         if (!Asource.isPlaying && !pl.Perdeu()) {
             Asource.Play();
         }
@@ -76,7 +77,20 @@ public class Enemy : MonoBehaviour
         }
     }
     
+    public void Morte() {     
+        gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        animator.SetTrigger("Death");
+        ativo = false;
+        Invoke("DESTRUIR",1f);
+    }
+
+    private void DESTRUIR() {
+        Destroy(gameObject);
+    }
+    
     private void MoveCharacter(Vector2 dir) {
-        rb.MovePosition((Vector2)transform.position + (dir * speed * Time.deltaTime));
+        if (ativo) {
+            rb.MovePosition((Vector2)transform.position + (dir * speed * Time.deltaTime));
+        }
     }
 }
