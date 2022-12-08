@@ -32,7 +32,6 @@ public class Enemy : MonoBehaviour
         target = GameObject.FindWithTag("Player").transform;
         pl = target.GetComponent<PlayerMovement>();
         Asource = GetComponent<AudioSource>();
-        Asource.volume = 8f;
         Asource.Stop();
         intervalo_ataque = 1f;
         ativo = true;
@@ -68,7 +67,7 @@ public class Enemy : MonoBehaviour
             if (isInAttackRange) {
                 rb.velocity = Vector2.zero;
                 intervalo_ataque -= Time.deltaTime;
-                if (intervalo_ataque <= 0) {
+                if (intervalo_ataque <= 0) { 
                     Asource.Stop();
                     pl.ReceberDano();
                     intervalo_ataque = 1f;

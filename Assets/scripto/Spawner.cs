@@ -20,7 +20,7 @@ public class Spawner : MonoBehaviour
     private void Start() {
         sr = gameObject.GetComponent<SpriteRenderer>();
         var v3 = transform.position;
-        v3.y += 0.6f;
+        v3.y += 2.2f;
         warningClone = Instantiate(warning, v3, warning.transform.rotation);
         AS = GetComponent<AudioSource>();
         AS.Stop();
