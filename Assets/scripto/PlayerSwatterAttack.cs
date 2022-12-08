@@ -61,7 +61,7 @@ public class PlayerSwatterAttack : MonoBehaviour
         
         foreach (Collider2D inimigo in inimigos) {
             if (inimigo != null) {
-                Destroy(inimigo.gameObject);
+                inimigo.GetComponent<Enemy>().Morte();
                 if (carga > 0) {
                     carga -= 10;
                 }

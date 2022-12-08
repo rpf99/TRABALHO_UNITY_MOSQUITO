@@ -1285,7 +1285,7 @@ TextureImporter:
       trees-green_22: 803865442
       trees-green_17: -1992429601
       trees-green_11: 559181463
-      trees-green_26: 390382083
+      trees-green_6: -603328924
       trees-green_36: -169689927
       trees-green_8: -1736942648
       trees-green_20: -1961456051
@@ -1335,8 +1335,8 @@ TextureImporter:
       trees-green_24: 91076965
       trees-green_13: -816224144
       trees-green_53: 1466275921
-      trees-green_6: -603328924
       trees-green_25: 895691803
+      trees-green_26: 390382083
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

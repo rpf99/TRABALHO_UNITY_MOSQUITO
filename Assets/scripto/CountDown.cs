@@ -12,32 +12,30 @@ public class CountDown : MonoBehaviour {
     private int minutos;
     private float segundos;
     private AudioSource sound;
-    private GameObject backgroundSong;
+    private PlayerMovement pl;
     
     private void Start() {
         minutos = 5;
         segundos = 0f;
         sound = GetComponent<AudioSource>();
         sound.Stop();
-        backgroundSong = GameObject.Find("BackgroundSong");
+        pl = GameObject.Find("Player").GetComponent<PlayerMovement>();
     }
     
     void FixedUpdate() {
-        timeText.text = String.Format("{0:00}:{1:00}", this.minutos, this.segundos);
-        
-        if (segundos <= 0.01) {
-            if (minutos == 0) {
-                backgroundSong.GetComponent<AudioSource>().Stop();
-                sound.PlayOneShot(sound.clip);
-                timeText.text = "Game Over";
-                Time.timeScale = 0;
-            }else {
-                minutos -= 1;
-                segundos = 59;
+        if (pl.Perdeu() == false) {
+            timeText.text = String.Format("{0:00}:{1:00}", this.minutos, this.segundos);
+            if (segundos <= 0.01) {
+                if (minutos == 0) {
+                    pl.GAMEOVER();
+                }else {
+                    minutos -= 1;
+                    segundos = 59;
+                }
             }
-        }
         
-        segundos -= Time.deltaTime;
+            segundos -= Time.deltaTime;
+        }
     }
     
 }
